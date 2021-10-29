@@ -78,5 +78,48 @@ describe('app routes', () => {
     expect(contentType).toEqual(expected);
   });
 
-  //must write html page for not found
+  it('should return a Not Found html page for any bad request', async () => {
+    const response = await fakeRequest(app).get('/bad');
+    const expected = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 page</title>
+</head>
+<body>
+<h1>Not Found</h1>
+</body>
+</html>`;
+
+    expect(response.text).toEqual(expected);
+  });
+
+  it('should return a Not Found html page for any bad request', async () => {
+    const response = await fakeRequest(app).post('/bad').send('garbage');
+    const expected = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>404 page</title>
+</head>
+<body>
+<h1>Not Found</h1>
+</body>
+</html>`;
+
+    expect(response.text).toEqual(expected);
+  });
+
+  it('should return status 404 for any bad request', async () => {
+    const response = await fakeRequest(app).get('/bad');
+    const expected = 404;
+
+    const status = response.statusCode;
+
+    expect(status).toEqual(expected);
+  });
 });
